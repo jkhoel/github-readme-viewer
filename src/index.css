@@ -1,0 +1,10 @@
+.btn-link {
+    background: none;
+    color: blue;
+    border: none;
+    padding: 0;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
