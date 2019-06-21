@@ -31,6 +31,7 @@ const NodeIcon = styled.div`
   font-size: 12px;
   margin-right: ${props => (props.marginRight ? props.marginRight : 5)}px;
   cursor: pointer;
+  color: ${props => (props.color ? props.color : 'inherit')};
 `;
 
 const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
@@ -43,8 +44,12 @@ const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
         </NodeIcon>
         <NodeIcon marginRight={10}>
           {node.type === 'file' && <FiFile />}
-          {node.type === 'folder' && node.isOpen && <FiFolder />}
-          {node.type === 'folder' && !node.isOpen && <FiFolder />}
+          {node.type === 'folder' && node.isOpen && (
+            <FiFolder onClick={() => onToggle(node)} color={'red'} />
+          )}
+          {node.type === 'folder' && !node.isOpen && (
+            <FiFolder onClick={() => onToggle(node)} color={'blue'} />
+          )}
         </NodeIcon>
 
         <span role="button">{node.path.split('/').pop()}</span>
