@@ -16,7 +16,6 @@ export const GithubContextProvider = ({ children, root, rootFile }) => {
 
     const [data, setData] = React.useState(null)
     React.useEffect(() => {
-        console.log(`${root}${rootFile}`)
         if (endpoint) {
             Axios
                 .get(endpoint)
