@@ -4,7 +4,7 @@ import { GithubContextProvider } from './components/GithubContext'
 
 function App() {
   return (
-    <GithubContextProvider root="https://raw.githubusercontent.com/132nd-vWing/OPUF-Brief/readme-patch-1" rootFile="/README.md">
+    <GithubContextProvider root="https://raw.githubusercontent.com/jkhoel/github-readme-viewer/master" rootFile="/README.md">
       <MarkdownBrowser />
     </GithubContextProvider>
   );
