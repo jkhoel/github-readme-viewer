@@ -25,7 +25,6 @@ const MenuTree = ({ data }) => {
 
   return (
     <div>
-      {new Date().getTime()}
       {getRootNodes().map(node => (
         <MenuNode
           key={node.path}
