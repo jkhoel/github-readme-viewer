@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MenuTree from './MenuTree';
+import MenuTree from '../MenuTree';
 
 const exampleData = {
   '/root': {
