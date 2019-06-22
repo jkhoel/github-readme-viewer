@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { GithubContext } from '../GithubContext';
+import { ImageModalContext } from '../ImageModalContext';
 
 import {
   CaretDown,
@@ -97,13 +98,13 @@ const iconSelector = (node, onClick) => {
 
 const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
   const { setEndpoint } = React.useContext(GithubContext);
+  const { show, toggleModal, setSource } = React.useContext(ImageModalContext);
 
   const onClickSelector = node => {
     switch (true) {
       case node.type === 'dir':
         return onToggle(node);
       case node.type === 'file' && getFileType(node.name) === 'md':
-        console.log('a markdown file was clicked!', node);
         setEndpoint(node.download_url);
         return null;
       case node.type === 'file' &&
@@ -111,7 +112,8 @@ const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
           getFileType(node.name) === 'gif' ||
           getFileType(node.name) === 'jpg' ||
           getFileType(node.name) === 'jpeg'):
-        console.log('a picture was clicked!');
+        toggleModal(true);
+        setSource(node.download_url);
         return null;
       default:
         return null;
@@ -123,7 +125,6 @@ const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
       <StyledTreeNode
         level={level}
         type={node.type}
-        // onClick={() => (node.type === 'dir' ? onToggle(node) : null)}
         onClick={() => onClickSelector(node)}
       >
         <NodeIcon>
