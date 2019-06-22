@@ -98,13 +98,14 @@ const iconSelector = (node, onClick) => {
 
 const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
   const { setEndpoint } = React.useContext(GithubContext);
-  const { show, toggleModal, setSource } = React.useContext(ImageModalContext);
+  const { toggleModal, setSource } = React.useContext(ImageModalContext);
 
   const onClickSelector = node => {
     switch (true) {
       case node.type === 'dir':
         return onToggle(node);
       case node.type === 'file' && getFileType(node.name) === 'md':
+        toggleModal(false);
         setEndpoint(node.download_url);
         return null;
       case node.type === 'file' &&
