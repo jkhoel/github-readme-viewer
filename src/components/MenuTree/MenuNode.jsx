@@ -3,17 +3,29 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import {
-  FiChevronRight,
-  FiChevronDown,
-  FiFile,
-  FiFolder
-} from 'react-icons/fi';
+  CaretDown,
+  CaretRight,
+  Hashtag,
+  Folder,
+  FolderOpen,
+  FilePdf
+} from 'styled-icons/fa-solid';
 
-const getPaddingLeft = (level, type) => {
-  let paddingLeft = level * 20;
-  if (type === 'file') paddingLeft += 20;
-  return paddingLeft;
-};
+import { File } from 'styled-icons/boxicons-solid';
+
+import { CodeCurly, CodeAlt, InfoCircle } from 'styled-icons/boxicons-regular';
+
+// import {
+//   FaFile,
+//   FaFolder,
+//   FaReadme,
+//   FaHashtag,
+//   FaFilePdf,
+//   FaFileCode,
+//   FaFolderOpen,
+//   FaCaretDown,
+//   FaCaretRight
+// } from 'react-icons/fa';
 
 const StyledTreeNode = styled.div`
   display: flex;
@@ -21,38 +33,85 @@ const StyledTreeNode = styled.div`
   align-items: center;
   padding: 5px 8px;
   padding-left: ${props => getPaddingLeft(props.level, props.type)}px;
+  cursor: ${props => (props.type === 'dir' ? 'pointer' : 'inherit')};
+  color: white;
 
   &:hover {
-    background: lightgray;
+    background: #2a2d2e;
   }
 `;
 
 const NodeIcon = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   margin-right: ${props => (props.marginRight ? props.marginRight : 5)}px;
-  cursor: pointer;
   color: ${props => (props.color ? props.color : 'inherit')};
 `;
+
+const getPaddingLeft = (level, type) => {
+  let paddingLeft = level * 20;
+  if (type === 'file') paddingLeft += 20;
+  return paddingLeft;
+};
+
+const getFileType = name => {
+  return name
+    .split('.')
+    .pop()
+    .toLowerCase();
+};
+
+const iconSelector = (node, onClick) => {
+  switch (true) {
+    case node.type === 'dir' && node.isOpen:
+      return <FolderOpen size="16" color="orange" />;
+
+    case node.type === 'dir' && !node.isOpen:
+      return <Folder size="16" color="orange" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'json':
+      return <CodeCurly size="16" color="yellow" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'js':
+      return <CodeAlt size="16" color="yellow" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'jsx':
+      return <CodeAlt size="16" color="cornflowerblue" />;
+
+    case node.type === 'file' &&
+      (getFileType(node.name) === 'css' ||
+        getFileType(node.name) === 'scss' ||
+        getFileType(node.name) === 'less'):
+      return <Hashtag size="16" color="orange" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'md':
+      return <InfoCircle size="16" color="cornflowerblue" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'pdf':
+      return <FilePdf size="16" color="orange" />;
+
+    default:
+      return <File size="16" color="gray" />;
+  }
+};
 
 const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
   return (
     <React.Fragment>
-      <StyledTreeNode level={level} type={node.type}>
-        <NodeIcon onClick={() => onToggle(node)}>
+      <StyledTreeNode
+        level={level}
+        type={node.type}
+        onClick={() => (node.type === 'dir' ? onToggle(node) : null)}
+      >
+        <NodeIcon>
           {node.type === 'dir' &&
-            (node.isOpen ? <FiChevronDown /> : <FiChevronRight />)}
+            (node.isOpen ? (
+              <CaretDown size="16" color="white" />
+            ) : (
+              <CaretRight size="16" color="white" />
+            ))}
         </NodeIcon>
-        <NodeIcon marginRight={10}>
-          {node.type === 'file' && <FiFile />}
-          {node.type === 'dir' && node.isOpen && (
-            <FiFolder onClick={() => onToggle(node)} color={'red'} />
-          )}
-          {node.type === 'dir' && !node.isOpen && (
-            <FiFolder onClick={() => onToggle(node)} color={'blue'} />
-          )}
-        </NodeIcon>
-
-        <span role="button">{node.path.split('/').pop()}</span>
+        <NodeIcon marginRight={10}>{iconSelector(node)}</NodeIcon>
+        <span role="button">{node.name}</span>
       </StyledTreeNode>
 
       {node.isOpen &&
