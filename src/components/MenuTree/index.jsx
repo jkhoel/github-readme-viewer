@@ -4,18 +4,13 @@ import MenuNode from './MenuNode';
 import styled from 'styled-components';
 
 const StyledTreeContainer = styled.div`
-  // display: flex;
-  // flex-direction: right;
-  // align-items: center;
-  // padding: 5px 8px;
-  // padding-left: 5px;
-
-  // &:hover {
-  //   background: lightgray;
-  // }
+  padding: 5px 8px;
+  padding-left: 5px;
+  padding-top: 1em;
 
   background-color: #252526;
   font-color: white;
+  height: 100%;
 `;
 
 const MenuTree = ({ data }) => {

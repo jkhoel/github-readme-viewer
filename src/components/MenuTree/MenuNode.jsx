@@ -81,7 +81,7 @@ const iconSelector = (node, onClick) => {
       (getFileType(node.name) === 'css' ||
         getFileType(node.name) === 'scss' ||
         getFileType(node.name) === 'less'):
-      return <Hashtag size="16" color="orange" />;
+      return <Hashtag size="16" color="cornflowerblue" />;
 
     case node.type === 'file' && getFileType(node.name) === 'md':
       return <InfoCircle size="16" color="cornflowerblue" />;
