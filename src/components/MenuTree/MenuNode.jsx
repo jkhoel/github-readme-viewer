@@ -13,19 +13,12 @@ import {
 
 import { File } from 'styled-icons/boxicons-solid';
 
-import { CodeCurly, CodeAlt, InfoCircle } from 'styled-icons/boxicons-regular';
-
-// import {
-//   FaFile,
-//   FaFolder,
-//   FaReadme,
-//   FaHashtag,
-//   FaFilePdf,
-//   FaFileCode,
-//   FaFolderOpen,
-//   FaCaretDown,
-//   FaCaretRight
-// } from 'react-icons/fa';
+import {
+  CodeCurly,
+  CodeAlt,
+  InfoCircle,
+  Image
+} from 'styled-icons/boxicons-regular';
 
 const StyledTreeNode = styled.div`
   display: flex;
@@ -77,17 +70,24 @@ const iconSelector = (node, onClick) => {
     case node.type === 'file' && getFileType(node.name) === 'jsx':
       return <CodeAlt size="16" color="cornflowerblue" />;
 
+    case node.type === 'file' && getFileType(node.name) === 'md':
+      return <InfoCircle size="16" color="cornflowerblue" />;
+
+    case node.type === 'file' && getFileType(node.name) === 'pdf':
+      return <FilePdf size="16" color="orange" />;
+
     case node.type === 'file' &&
       (getFileType(node.name) === 'css' ||
         getFileType(node.name) === 'scss' ||
         getFileType(node.name) === 'less'):
       return <Hashtag size="16" color="cornflowerblue" />;
 
-    case node.type === 'file' && getFileType(node.name) === 'md':
-      return <InfoCircle size="16" color="cornflowerblue" />;
-
-    case node.type === 'file' && getFileType(node.name) === 'pdf':
-      return <FilePdf size="16" color="orange" />;
+    case node.type === 'file' &&
+      (getFileType(node.name) === 'png' ||
+        getFileType(node.name) === 'gif' ||
+        getFileType(node.name) === 'jpg' ||
+        getFileType(node.name) === 'jpeg'):
+      return <Image size="16" color="cyan" />;
 
     default:
       return <File size="16" color="gray" />;
