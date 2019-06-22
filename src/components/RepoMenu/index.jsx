@@ -3,45 +3,6 @@ import PropTypes from 'prop-types';
 import MenuTree from '../MenuTree';
 import Axios from 'axios';
 
-const exampleData = [
-  {
-    path: '/root',
-    type: 'dir',
-    isRoot: true,
-    children: ['/root/david', '/root/jslancer']
-  },
-  {
-    path: '/root/david',
-    type: 'dir',
-    children: ['/root/david/readme.md']
-  },
-  {
-    path: '/root/david/readme.md',
-    type: 'file',
-    content: 'Thanks for reading me me. But there is nothing here.'
-  },
-  {
-    path: '/root/jslancer',
-    type: 'dir',
-    children: ['/root/jslancer/projects', '/root/jslancer/vblogs']
-  },
-  {
-    path: '/root/jslancer/projects',
-    type: 'dir',
-    children: ['/root/jslancer/projects/treeview']
-  },
-  {
-    path: '/root/jslancer/projects/treeview',
-    type: 'dir',
-    children: []
-  },
-  {
-    path: '/root/jslancer/vblogs',
-    type: 'dir',
-    children: []
-  }
-];
-
 const createNode = (node, isRoot) => {
   return {
     path: node.path,
@@ -54,56 +15,47 @@ const createNode = (node, isRoot) => {
   };
 };
 
-const repoCrawler = (endpoint, level, onComplete) => {
-  let results = [];
-
-  Axios.get(endpoint).then(res => {
-    let pending = res.data.length;
-    if (!pending) return onComplete(null, results);
-    res.data.forEach(node => {
-      if (node.type === 'dir') {
-        results.push(createNode(node, level > 0 ? false : true));
-        repoCrawler(node.url, level + 1, (err, res) => {
-          res.forEach(node => {
-            let parent = node.path
-              .split(node.name)
-              .shift()
-              .slice(0, -1);
-
-            let indexOfParent = Object.values(results).findIndex(
-              el => el.path === parent
-            );
-
-            if (indexOfParent > 0)
-              results[indexOfParent].children.push(node.path);
-          });
-          results = results.concat(res);
-          if (!--pending) onComplete(null, results);
-        });
-      } else {
-        results.push(createNode(node, level > 0 ? false : true));
-        if (!--pending) onComplete(null, results);
-      }
+async function getFileTree(endpoint, level, result = [], parent = null) {
+  // Find all items at the current endpoint and make nodes
+  const files = await Axios(endpoint)
+    .then(res => res.data)
+    .then(data => {
+      let nodes = [];
+      data.forEach(node => {
+        // Create a node for each object found at the endpoint
+        let n = createNode(node, level > 0 ? false : true);
+        // if the current object has a parent, then add this node as a child to that parent
+        if (parent) parent.push(n.path);
+        // push the new node to result
+        result.push(n);
+        nodes.push(n);
+      });
+      return nodes;
     });
+
+  // See if any of the items at the current endpoint are directories, if so - recursively get the content
+  await files.forEach(node => {
+    if (node.type === 'dir') {
+      getFileTree(node.url, level + 1, result, node.children);
+    }
   });
-};
+
+  return result;
+}
 
 const RepoMenu = ({ root }) => {
   const [endpoint] = React.useState(root);
 
-  const [data, setData] = React.useState(exampleData);
+  const [data, setData] = React.useState(null);
   React.useEffect(() => {
     if (endpoint) {
-      repoCrawler(endpoint, 0, (err, data) => {
-        if (err) throw err;
-
-        setData(data);
+      getFileTree(endpoint, 0).then(res => {
+        setData(res);
       });
     }
   }, [endpoint]);
 
   if (data) return <MenuTree data={data} />;
-
   return null;
 };
 
