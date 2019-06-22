@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,UACI,eAAgB,CAChB,UAAW,CACX,WAAY,CACZ,SACJ,CAEA,gBACI,yBACJ","file":"main.bdc9d1ad.chunk.css","sourcesContent":[".btn-link {\r\n    background: none;\r\n    color: blue;\r\n    border: none;\r\n    padding: 0;\r\n}\r\n\r\n.btn-link:hover {\r\n    text-decoration: underline;\r\n}"]}
