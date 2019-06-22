@@ -14,11 +14,11 @@ function App() {
       autoRows="minmax(100px, auto)"
     >
       <GithubContextProvider
-        root="https://raw.githubusercontent.com/jkhoel/github-readme-viewer/master"
+        root="https://raw.githubusercontent.com/132nd-vWing/OPUF-Brief/master"
         rootFile="/README.md"
       >
         <GridItem column="1" row="1">
-          <RepoMenu root="https://api.github.com/repos/jkhoel/github-readme-viewer/contents/" />
+          <RepoMenu root="https://api.github.com/repos/132nd-vWing/OPUF-Brief/contents/" />
         </GridItem>
         <GridItem column="2 / 6" row="1">
           <MarkdownBrowser />
