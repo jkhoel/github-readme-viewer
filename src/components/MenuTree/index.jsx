@@ -2,20 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MenuNode from './MenuNode';
 
-// const exampleData = {
-//   '/root': {
-//     path: '/root',
-//     type: 'folder',
-//     isRoot: true,
-//     children: ['/root/david', '/root/jslancer']
-//   },
-//   '/root/david': {
-//     path: '/root/david',
-//     type: 'folder',
-//     children: ['/root/david/readme.md']
-//   }
-// }
-
 const MenuTree = ({ data }) => {
   const [nodes, setNodes] = React.useState(data);
   React.useEffect(() => {
@@ -28,12 +14,16 @@ const MenuTree = ({ data }) => {
 
   const getChildNodes = node => {
     if (!node.children) return [];
-    return node.children.map(path => nodes[path]);
+    return node.children.map(path =>
+      Object.values(nodes).find(el => el.path === path)
+    );
   };
 
   const onToggle = node => {
-    nodes[node.path].isOpen = !node.isOpen;
-    console.log('TOGGLE!');
+    let indexOfParent = Object.values(nodes).findIndex(
+      el => el.path === node.path
+    );
+    nodes[indexOfParent].isOpen = !node.isOpen;
     setNodes({ ...nodes });
   };
 
@@ -52,7 +42,7 @@ const MenuTree = ({ data }) => {
 };
 
 MenuTree.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.array.isRequired
 };
 
 MenuTree.defaultProps = {

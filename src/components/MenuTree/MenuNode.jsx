@@ -39,15 +39,15 @@ const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
     <React.Fragment>
       <StyledTreeNode level={level} type={node.type}>
         <NodeIcon onClick={() => onToggle(node)}>
-          {node.type === 'folder' &&
+          {node.type === 'dir' &&
             (node.isOpen ? <FiChevronDown /> : <FiChevronRight />)}
         </NodeIcon>
         <NodeIcon marginRight={10}>
           {node.type === 'file' && <FiFile />}
-          {node.type === 'folder' && node.isOpen && (
+          {node.type === 'dir' && node.isOpen && (
             <FiFolder onClick={() => onToggle(node)} color={'red'} />
           )}
-          {node.type === 'folder' && !node.isOpen && (
+          {node.type === 'dir' && !node.isOpen && (
             <FiFolder onClick={() => onToggle(node)} color={'blue'} />
           )}
         </NodeIcon>
