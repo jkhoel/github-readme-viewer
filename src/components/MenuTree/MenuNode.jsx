@@ -26,7 +26,7 @@ const StyledTreeNode = styled.div`
   align-items: center;
   padding: 5px 8px;
   padding-left: ${props => getPaddingLeft(props.level, props.type)}px;
-  cursor: ${props => (props.type === 'dir' ? 'pointer' : 'inherit')};
+  cursor: pointer;
   color: white;
 
   &:hover {
@@ -95,12 +95,32 @@ const iconSelector = (node, onClick) => {
 };
 
 const MenuNode = ({ node, getChildNodes, level, onToggle }) => {
+  const onClickSelector = node => {
+    switch (true) {
+      case node.type === 'dir':
+        return onToggle(node);
+      case node.type === 'file' && getFileType(node.name) === 'md':
+        console.log('a markdown file was clicked!');
+        return null;
+      case node.type === 'file' &&
+        (getFileType(node.name) === 'png' ||
+          getFileType(node.name) === 'gif' ||
+          getFileType(node.name) === 'jpg' ||
+          getFileType(node.name) === 'jpeg'):
+        console.log('a picture was clicked!');
+        return null;
+      default:
+        return null;
+    }
+  };
+
   return (
     <React.Fragment>
       <StyledTreeNode
         level={level}
         type={node.type}
-        onClick={() => (node.type === 'dir' ? onToggle(node) : null)}
+        // onClick={() => (node.type === 'dir' ? onToggle(node) : null)}
+        onClick={() => onClickSelector(node)}
       >
         <NodeIcon>
           {node.type === 'dir' &&

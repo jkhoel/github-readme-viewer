@@ -24,7 +24,6 @@ const MenuTree = ({ data }) => {
   };
 
   const getChildNodes = node => {
-    console.log(node.name, node.children);
     if (!node.children) return [];
     return node.children.map(path =>
       Object.values(nodes).find(el => el.path === path)
