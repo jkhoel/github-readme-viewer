@@ -1,6 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuNode from './MenuNode';
+import styled from 'styled-components';
+
+const StyledTreeContainer = styled.div`
+  // display: flex;
+  // flex-direction: right;
+  // align-items: center;
+  // padding: 5px 8px;
+  // padding-left: 5px;
+
+  // &:hover {
+  //   background: lightgray;
+  // }
+
+  background-color: #252526;
+  font-color: white;
+`;
 
 const MenuTree = ({ data }) => {
   const [nodes, setNodes] = React.useState(data);
@@ -28,7 +44,7 @@ const MenuTree = ({ data }) => {
   };
 
   return (
-    <div>
+    <StyledTreeContainer>
       {getRootNodes().map(node => (
         <MenuNode
           key={node.path}
@@ -37,7 +53,7 @@ const MenuTree = ({ data }) => {
           onToggle={onToggle}
         />
       ))}
-    </div>
+    </StyledTreeContainer>
   );
 };
 
