@@ -1,6 +1,7 @@
 ## Github-Readme-Viewer
 A demo project showing how to use the GitHub api with React in order to display a readme file
 
+[Demo on GH Pages](https://jkhoel.github.io/github-readme-viewer/)
 ## How to use
 1. Either fork or clone the repo
 2. Realize that we are working with the RAW files here, not the GitHub HPI
